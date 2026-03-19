@@ -1,0 +1,30 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    network_mode: host
+    environment:
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_NAME: loans
+      DB_USER: user
+      DB_PASSWORD: password
+      COOKIE_VALIDATION_KEY: change-this-key-in-production
+      YII_ENV: prod
+      YII_DEBUG: 0
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16-alpine
+    network_mode: host
+    environment:
+      POSTGRES_DB: loans
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
